@@ -6,5 +6,6 @@ const router = Router();
 
 router.get("/notes", NoteController.getNotes);
 router.post("/notes", validateNote, NoteController.createNote);
+//router.post("/notes", NoteController.createNote);
 
 export default router;

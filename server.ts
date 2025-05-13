@@ -14,7 +14,6 @@ const app = express();
 const server = http.createServer(app);
 const io = setupSocket(server);
 
-app.set('io', io); 
 
 app.use(cors({
     origin: "*",
@@ -22,6 +21,7 @@ app.use(cors({
 }));
 app.use(bodyParser.json());
 
+app.set('io', io); 
 // Routes
 app.use('/api', noteRoutes);
 

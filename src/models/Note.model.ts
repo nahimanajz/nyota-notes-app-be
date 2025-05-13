@@ -28,6 +28,10 @@ Note.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    isSynced: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    }
   },
   {
     sequelize,
