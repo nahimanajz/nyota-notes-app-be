@@ -16,7 +16,10 @@ const io = setupSocket(server);
 
 app.set('io', io); 
 
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST"]
+}));
 app.use(bodyParser.json());
 
 // Routes
