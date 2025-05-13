@@ -5,21 +5,19 @@ export default class NoteController {
   // Fetch all notes
   public static async getNotes(req: Request, res: Response): Promise<any> {
     try {
-      const notes = await Note.findAll();
+      const data = await Note.findAll();
+      const notes = data.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
       return res.json(notes);
     } catch (error) {
-      console.log({error})
       return res.status(500).json({ error: 'Failed to fetch notes' });
     }
   }
 
   // Create or update a note
-  public static async createNote(req: Request, res: Response):Promise<Response | any> {
-    console.log("this is the body", {body: req.body})
-    
+  public static async createNote(req: Request, res: Response): Promise<Response | any> {
+
     try {
       const { id, title, content } = req.body;
-      
       const io = req.app.get('io');
 
       // Check for duplicates
@@ -31,20 +29,18 @@ export default class NoteController {
       if (!created) {
         note.title = title;
         note.content = content;
-        note.id =id
-        
+        note.id = id
+        note.isSynced = true
+
         await note.save();
         io.emit('note:created', note);
       } else {
-          io.emit('note:synced', note);
+        io.emit('note:synced', note);
       }
-     console.log({sentId:id, retrievedId: note.dataValues.id})
-
       return res.status(created ? 201 : 200).json(note);
     } catch (error) {
-     console.log("Error while creating a note", {error})
       return res.status(500).json({ error: 'Failed to create note' });
     }
-      
+
   }
 }

@@ -6,6 +6,7 @@ export class Note extends Model {
   public title!: string;
   public content!: string;
   public updatedAt!: Date;
+  public isSynced!: boolean
 }
 
 Note.init(
